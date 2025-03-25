@@ -1,42 +1,7 @@
-"use client";
-
-import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 
 export default function Home() {
-  const [number, setNumber] = useState<number | null>(null);
-
-  useEffect(() => {
-    const eventSource = new EventSource("/api/random-number");
-
-    eventSource.addEventListener('connected', (e) => {
-      console.log('Connected:', JSON.parse(e.data));
-    });
-    
-    eventSource.addEventListener('initial', (e) => {
-      const data = JSON.parse(e.data);
-      console.log('Initial UTXO count:', data.count);
-      setNumber(Number(data.count));
-    });
-    
-    eventSource.addEventListener('update', (e) => {
-      const data = JSON.parse(e.data);
-      console.log('Updated UTXO count:', data.count);
-      setNumber(Number(data.count));
-    });
-    
-    eventSource.onerror = () => {
-      console.error("Error occurred with SSE connection.");
-      eventSource.close();
-    };
-
-    // Cleanup on unmount
-    return () => {
-      eventSource.close();
-    };
-  }, []);
-
   return (
     <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
       <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
@@ -48,15 +13,7 @@ export default function Home() {
           height={38}
           priority
         />
-        <div>
-          <Button>Click me</Button>
-        </div>
 
-        <div className="flex items-center justify-center h-screen">
-          <h1 className="text-3xl font-bold">
-            Random Number: {number !== null ? number : "Loading..."}
-          </h1>
-        </div>
         <ol className="list-inside list-decimal text-sm/6 text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
           <li className="mb-2 tracking-[-.01em]">
             Get started by editing{" "}

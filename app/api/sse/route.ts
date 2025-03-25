@@ -1,3 +1,5 @@
+import 'dotenv/config';
+
 import AndamioSDK from "@andamiojs/sdk";
 
 // app/api/sse/route.ts
@@ -82,10 +84,10 @@ export async function GET(request: Request) {
   });
 }
 
+const sdk = new AndamioSDK("https://mainnet.utxorpc-v0.demeter.run:443", "Mainnet", process.env.DMTR_API_KEY);
 // Example async functions with TypeScript types
 async function fetchDataAsynchronously(): Promise<SSEData> {
-  const sdk = new AndamioSDK("https://mainnet.utxorpc-v0.demeter.run:443", "Mainnet", "utxorpc1q48kx774238dgf7ats5");
-  // const sdk = new AndamioSDK("https://preprod.utxorpc-v0.demeter.run:443", "Preprod", "dmtr_utxorpc15dnupstcsym5xjd7yha0eccta5x6s353");
+  // const sdk = new AndamioSDK("https://preprod.utxorpc-v0.demeter.run:443", "Preprod", process.env.DMTR_API_KEY);
 
   const instances = await sdk.provider.core.network.aliasIndex.getUtxos();
   return { 
@@ -96,18 +98,20 @@ async function fetchDataAsynchronously(): Promise<SSEData> {
 }
 
 async function processMoreData(): Promise<SSEData> {
-  await new Promise(resolve => setTimeout(resolve, 1500));
+  const instances = await sdk.provider.core.network.aliasIndex.getUtxos();
   return { 
     message: "Secondary data processed", 
-    timestamp: Date.now() 
+    timestamp: Date.now(),
+    count: instances.length
   };
 }
 
 async function getUpdateData(iteration: number): Promise<SSEData> {
-  await new Promise(resolve => setTimeout(resolve, 500));
+  const instances = await sdk.provider.core.network.aliasIndex.getUtxos();
   return { 
     message: `Update ${iteration}`, 
     timestamp: Date.now(),
+    count: instances.length,
     iteration 
   };
 }

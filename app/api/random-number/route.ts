@@ -1,3 +1,5 @@
+import 'dotenv/config';
+
 import AndamioSDK from "@andamiojs/sdk";
 import { NextRequest } from "next/server";
 
@@ -7,7 +9,7 @@ import { NextRequest } from "next/server";
 //   "dmtr_utxorpc15dnupstcsym5xjd7yha0eccta5x6s353"
 // );
 
-const sdk = new AndamioSDK("https://mainnet.utxorpc-v0.demeter.run:443", "Mainnet", "utxorpc1q48kx774238dgf7ats5");
+const sdk = new AndamioSDK("https://mainnet.utxorpc-v0.demeter.run:443", "Mainnet", process.env.DMTR_API_KEY);
 
 
 export async function GET(req: NextRequest) {
