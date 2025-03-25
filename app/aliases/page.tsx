@@ -1,7 +1,7 @@
 "use client";
 
 import { columns } from "./columns";
-import { DataTable } from "../../components/data-table";
+import { DataTable } from "./data-table";
 import { useEffect, useState } from "react";
 
 interface SSEMessage {
